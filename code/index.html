@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="css/swiper.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/style.css?v=2" rel="stylesheet" />
+    <script src="js/zepto.min.js"></script>
+    <script src="js/touch.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.easie.js"></script>
+    <link href="css/haoest.min.css" rel="stylesheet" />
+    <style>
+        @-webkit-keyframes myfirst {
+            0% {
+                width: 10%;
+                top: 40%;
+                left: 40%;
+            }
+
+
+
+
+
+            100% {
+                width: 30%;
+                left:10%;
+                top: 50%;
+            }
+        }
+
+        @keyframes myfirst {
+            0% {
+                width: 10%;
+                top: 40%;
+                left: 40%;
+            }
+
+
+
+
+
+            100% {
+                width: 30%;
+                left: 10%;
+                top: 50%;
+            }
+        }
+
+        .myani {
+            animation: myfirst 2s;
+            -moz-animation: myfirst 2s; /* Firefox */
+            -webkit-animation: myfirst 2s; /* Safari 和 Chrome */
+            -o-animation: myfirst 2s; /* Opera */
+            animation-timing-function: linear;
+        }
+
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-size: 100% 100%;
+        }
+
+
+        .page-0 {
+            background-color: #dc292d;
+        }
+
+            .page-0 .loading {
+                width: 30%;
+                height: 40%;
+                position: absolute;
+                left: 50%;
+                top: 40%;
+                margin-top: -20%;
+                margin-left: -15%;
+                font-size: 20%;
+                color: #000;
+            }
+
+            .page-0 .loading-img {
+                width: 100%;
+                margin-bottom: 10%;
+            }
+
+            .page-0 .loading div {
+                position: absolute;
+                width: 100%;
+                top: 50%;
+                text-align: center;
+                font-size: 20px;
+                font-family: fantasy;
+            }
+            .page.page-index{
+                background-image:url('img/green-back-new.png');
+            }
+        .kl {
+            position: absolute;
+            width: 10%;
+            top: 40%;
+            left: 40%;
+        }
+        .roadline {
+            position: absolute;
+            width: 5%;
+            height: 50%;
+            left: 48%;
+            top: 40%;
+        }
+        .jiasu {
+            position: absolute;
+            width: 20%;
+            left: 70%;
+            top: 80%;
+            z-index:999;
+        }
+        .banana-left-start {
+            position: absolute;
+            top: 40%;
+            left: 35%;
+            width: 10%;
+            /*top: 60%;
+            left: 10%;
+            width: 20%;*/
+        }
+        .banana-right-start {
+            position: absolute;
+            left: 55%;
+            width: 10%;
+            top: 40%;
+            /*left: 65%;
+            width: 20%;
+            top: 60%;*/
+        }
+       .miles {
+            position: absolute;
+            top: 20%;
+            font-size: 50px;
+            color: white;
+        }
+        .bike-left {
+            position: absolute;
+            height: 40%;
+            top: 60%;
+        }
+        .bike-right {
+            position: absolute;
+            /* width: 40%; */
+            height: 40%;
+            top: 60%;
+            left: 50%;
+        }
+    </style>
+
+</head>
+<body onload="PageCtl.loadComplete()">
+    <div class="page page-0 page-current">
+        <div class="loading">
+            <img class="loading-img ani-rotateRight ani-iteration-infinite" src="img/loading.png" />
+            <div>Loading</div>
+        </div>
+    </div>
+    <div class="page page-index hide ">
+        <img class="roadline" src="img/roadline.png" />
+        <img class="jiasu" src="img/jiasu.png" />
+        <img class="mbanana hide" src="img/banana.png" />
+        <span class="miles"></span>
+        <img class="bike bike-left"  src="img/bike.png" />
+        <img class="left" src="img/left.png" />
+        <img class="right" src="img/right.png" />
+    </div>
+</body>
+<script>
+    var miles = 0;//
+    var maxmiles = 1000;
+    var map = {
+        banana800: {
+            isLeft:true,
+            left:35,
+            top:40
+        },
+        banana950: {
+            isLeft: false,
+            left: 55,
+            top: 40
+        },
+        banana700: {
+            isLeft: true,
+            left: 35,
+            top: 40
+        },
+        banana500: {
+            isLeft: false,
+            left: 55,
+            top: 40
+        },
+
+    }
+    var ii = 0;
+    var speed = 1;
+    var PageCtl = {
+        gamePoint: 0,
+
+        currentPageNumber: 0,
+
+        effects: { moveUp: 1, moveDown: 2, fade: 3 },
+
+        directions: { up: 1, down: -1 },
+
+        isAnimating: false,
+
+        pageMove: function (effect, pageNumber) {
+            if (!PageCtl.isAnimating) {
+                PageCtl.isAnimating = true;
+                var fromPage = ".page-" + PageCtl.currentPageNumber;
+                var toPage = ".page-" + pageNumber;
+                PageCtl.currentPageNumber = pageNumber;
+
+                switch (effect) {
+                    case PageCtl.effects.fade:
+                        outClass = 'ani-fadeOut';
+                        inClass = 'ani-fadeIn';
+                        break;
+                }
+
+                $(toPage).removeClass("hide");
+                $(fromPage).addClass(outClass);
+                $(toPage).addClass(inClass);
+
+                setTimeout(function () {
+                    $(fromPage).removeClass('page-current');
+                    $(fromPage).removeClass(outClass);
+                    $(fromPage).addClass("hide");
+                    //$(fromPage).find("*").addClass("hide");
+
+                    $(toPage).addClass('page-current');
+                    $(toPage).removeClass(inClass);
+                    //$(toPage).find("*").removeClass("hide");
+
+                    PageCtl.isAnimating = false;
+                }, 600);
+            }
+        },
+
+
+        loadComplete: function () {
+            PageCtl.pageMove(PageCtl.effects.fade, "index");
+        }
+    };
+
+    $(function () {
+
+        $('.left').on('singleTap', function () {
+            $('.bike').removeClass("bike-right").addClass("bike-left");
+        })
+        $('.right').on('singleTap', function () {
+            $('.bike').removeClass("bike-left").addClass("bike-right");
+        })
+        function banana(_maxmiles) {
+            var i = 0;
+            if (map["banana" + _maxmiles].isLeft == true) {
+                var bananastr = " <img id='banana-" + _maxmiles + "' class='hide' src='img/banana.png' />";
+                $('.page-index').append(bananastr);
+                $('#banana-'+_maxmiles).addClass("banana-left-start").removeClass("hide");
+                var t = setInterval(function () {
+                    i++;
+                    $('#banana-' + _maxmiles).css("top", (40 + i * 2) + "%");
+                    $('#banana-' + _maxmiles).css("width", (10 + i * 1) + "%");
+                    $('#banana-' + _maxmiles).css("left", (35 - i * 2.5) + "%");
+                 
+                    if (i == 10) {
+                        $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-left-start");
+                        clearInterval(t);
+                    }
+                }, 500 - 100 * speed);
+            }
+            else {
+                var bananastr = " <img id='banana-" + _maxmiles + "' class='hide' src='img/banana.png' />";
+                $('.page-index').append(bananastr);
+                $('#banana-' + _maxmiles).addClass("banana-right-start").removeClass("hide");
+                var t2 = setInterval(function () {
+                    i++;
+                    $('#banana-' + _maxmiles).css("top", (40 + i * 2) + "%");
+                    $('#banana-' + _maxmiles).css("width", (10 + i * 1) + "%");
+                    $('#banana-' + _maxmiles).css("left", (55 + i * 1) + "%");
+                    if (i == 10) {
+                        $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-right-start");
+                        clearInterval(t2);
+                    }
+                }, 500 - 100 * speed);
+            }
+        }
+        
+
+        go(500);
+        function go(_speed) {
+            
+            setTimeout(function () {
+                miles++;
+                $('.miles').text("距离终点还剩：" + (maxmiles-=10) + "米");
+                if (maxmiles <=0) {
+                    return false;
+                }
+                if (map.hasOwnProperty("banana" + maxmiles)) {
+                    banana(maxmiles);
+                }
+                ii++;
+                if (ii % 2 == 0) {
+                    $('.roadline').css("top", "45%");
+                }
+                else {
+                    $('.roadline').css("top", "35%");
+                }
+                if (speed == 5) {
+                    speed = 4;
+                }
+                go(500-100*speed);
+            }, _speed);
+        }
+        //setInterval(function () {
+        //    ii++;
+        //    if (ii % 2 == 0) {
+        //        $('.roadline').css("top", "45%");
+        //    }
+        //    else {
+        //        $('.roadline').css("top", "35%");
+        //    }
+
+        //}, 500-10*speed);
+        // GameTimerStart();
+        $('.jiasu').on('singleTap',function(){
+            speed++;
+        })
+            
+    })
+</script>
+
+</html>
