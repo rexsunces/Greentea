@@ -123,10 +123,10 @@
         }
         .jiasu {
             position: absolute;
-            width: 20%;
-            left: 70%;
-            top: 80%;
-            z-index:999;
+            width: 18%;
+            left: 75%;
+            top: 86%;
+            z-index: 999;
         }
         .banana-left-start {
             position: absolute;
@@ -146,6 +146,25 @@
             width: 20%;
             top: 60%;*/
         }
+        .tea-left-start {
+            position: absolute;
+            height: 5%;
+            top: 40%;
+            left: 40%;
+            /*height: 10%;
+            top: 50%;
+            left: 25%;*/
+        }
+
+        .tea-right-start {
+            position: absolute;
+            height: 5%;
+            top: 40%;
+            left: 55%;
+            /*height: 10%;
+            top: 55%;
+            left: 65%;*/
+        }
        .miles {
             position: absolute;
             top: 20%;
@@ -155,14 +174,53 @@
         .bike-left {
             position: absolute;
             height: 40%;
-            top: 60%;
+            top: 45%;
+            z-index:999;
         }
         .bike-right {
             position: absolute;
             /* width: 40%; */
             height: 40%;
-            top: 60%;
-            left: 50%;
+            top: 45%;
+            left: 60%;
+            z-index:999;
+        }
+        .left {
+            width: 16%;
+            height: 10%;
+            position: absolute;
+            left: 29%;
+            top: 85%;
+        }
+        .right {
+            width: 16%;
+            height: 10%;
+            position: absolute;
+            left: 55%;
+            top: 85%;
+        }
+        .tree {
+            position: absolute;
+            width: 30%;
+            bottom: 0px;
+            left: 70%;
+        }
+
+        .using-time-span {
+            position: absolute;
+            width:28%;
+            left: 5%;
+            top: 20%;
+            font-size: 30px;
+            color: #FF9900;
+            font-style: italic;
+            font-family: fantasy;
+
+        }
+        .using-time-span-text{
+            display:block;
+            float:left;
+            margin-left:5%;
         }
     </style>
 
@@ -182,16 +240,26 @@
         <img class="bike bike-left"  src="img/bike.png" />
         <img class="left" src="img/left.png" />
         <img class="right" src="img/right.png" />
+        <div class="using-time-span"><span class="using-time-span-text">0.00</span><span style="display:block;float:right">&nbsp;S&nbsp;</span></div>
+        <img class="tree" src="img/tree.png" />
+        <img src="img/tea.png" />
     </div>
 </body>
 <script>
+    var mtime =0;
     var miles = 0;//
     var maxmiles = 1000;
+    var gametimer;
     var map = {
         banana800: {
             isLeft:true,
             left:35,
             top:40
+        },
+        tea920: {
+            isLeft: true,
+            left: 55,
+            top: 40
         },
         banana950: {
             isLeft: false,
@@ -208,6 +276,12 @@
             left: 55,
             top: 40
         },
+        tea300: {
+            isLeft: false,
+            left: 55,
+            top: 40
+        }
+
 
     }
     var ii = 0;
@@ -263,13 +337,47 @@
     };
 
     $(function () {
-
+        GameTimerGo();
         $('.left').on('singleTap', function () {
             $('.bike').removeClass("bike-right").addClass("bike-left");
         })
         $('.right').on('singleTap', function () {
             $('.bike').removeClass("bike-left").addClass("bike-right");
         })
+        function tea(_maxmiles) {
+            var i = 0;
+            if (map["tea" + _maxmiles].isLeft == true) {
+                var teastr = " <img id='tea-" + _maxmiles + "' class='hide' src='img/tea.png' />";
+                $('.page-index').append(teastr);
+                $('#tea-' + _maxmiles).addClass("tea-left-start").removeClass("hide");
+                var t = setInterval(function () {
+                    i++;
+                    $('#tea-' + _maxmiles).css("top", (40 + i * 1.5) + "%");
+                    $('#tea-' + _maxmiles).css("height", (5 + i *0.5) + "%");
+                    $('#tea-' + _maxmiles).css("left", (40 - i * 1.5) + "%");
+
+                    if (i == 10) {
+                        $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-left-start");
+                        clearInterval(t);
+                    }
+                }, 500 - 100 * speed);
+            }
+            else {
+                var teastr = " <img id='tea-" + _maxmiles + "' class='hide' src='img/tea.png' />";
+                $('.page-index').append(teastr);
+                $('#tea-' + _maxmiles).addClass("tea-right-start").removeClass("hide");
+                var t2 = setInterval(function () {
+                    i++;
+                    $('#tea-' + _maxmiles).css("top", (40 + i * 1.5) + "%");
+                    $('#tea-' + _maxmiles).css("height", (5 + i * 0.5) + "%");
+                    $('#tea-' + _maxmiles).css("left", (55 + i * 1) + "%");
+                    if (i == 10) {
+                        $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-right-start");
+                        clearInterval(t2);
+                    }
+                }, 500 - 100 * speed);
+            }
+        }
         function banana(_maxmiles) {
             var i = 0;
             if (map["banana" + _maxmiles].isLeft == true) {
@@ -306,17 +414,28 @@
         }
         
 
-        go(500);
+      
+        function GameTimerGo() {
+           go(500);
+           gametimer=  setInterval(function () {
+                mtime += 10;
+                $('.using-time-span-text').text((mtime / 1000).toFixed(2));
+            }, 10);
+        }
         function go(_speed) {
             
             setTimeout(function () {
                 miles++;
                 $('.miles').text("距离终点还剩：" + (maxmiles-=10) + "米");
-                if (maxmiles <=0) {
+                if (maxmiles <= 0) {
+                    clearInterval(gametimer);
                     return false;
                 }
                 if (map.hasOwnProperty("banana" + maxmiles)) {
                     banana(maxmiles);
+                }
+                if (map.hasOwnProperty("tea" + maxmiles)) {
+                    tea(maxmiles);
                 }
                 ii++;
                 if (ii % 2 == 0) {
@@ -331,6 +450,7 @@
                 go(500-100*speed);
             }, _speed);
         }
+        
         //setInterval(function () {
         //    ii++;
         //    if (ii % 2 == 0) {

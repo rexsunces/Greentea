@@ -71,6 +71,8 @@
     <Content Include="code\img\loading.png" />
     <Content Include="code\img\right.png" />
     <Content Include="code\img\roadline.png" />
+    <Content Include="code\img\tea.png" />
+    <Content Include="code\img\tree.png" />
     <Content Include="code\index.html" />
     <Content Include="code\js\bootstrap.min.js" />
     <Content Include="code\js\index.js" />
