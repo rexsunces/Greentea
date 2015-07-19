@@ -28,7 +28,7 @@
 
             100% {
                 width: 30%;
-                left:10%;
+                left: 10%;
                 top: 50%;
             }
         }
@@ -105,15 +105,18 @@
                 font-size: 20px;
                 font-family: fantasy;
             }
-            .page.page-index{
-                background-image:url('img/green-back-new.png');
-            }
+
+        .page.page-index {
+            background-image: url('img/green-back-new.png');
+        }
+
         .kl {
             position: absolute;
             width: 10%;
             top: 40%;
             left: 40%;
         }
+
         .roadline {
             position: absolute;
             width: 5%;
@@ -121,6 +124,7 @@
             left: 48%;
             top: 40%;
         }
+
         .jiasu {
             position: absolute;
             width: 18%;
@@ -128,6 +132,7 @@
             top: 86%;
             z-index: 999;
         }
+
         .banana-left-start {
             position: absolute;
             top: 40%;
@@ -137,6 +142,7 @@
             left: 10%;
             width: 20%;*/
         }
+
         .banana-right-start {
             position: absolute;
             left: 55%;
@@ -146,6 +152,7 @@
             width: 20%;
             top: 60%;*/
         }
+
         .tea-left-start {
             position: absolute;
             height: 5%;
@@ -165,26 +172,30 @@
             top: 55%;
             left: 65%;*/
         }
-       .miles {
+
+        .miles {
             position: absolute;
             top: 20%;
             font-size: 50px;
             color: white;
         }
+
         .bike-left {
             position: absolute;
             height: 40%;
             top: 45%;
-            z-index:999;
+            z-index: 999;
         }
+
         .bike-right {
             position: absolute;
             /* width: 40%; */
             height: 40%;
             top: 45%;
             left: 60%;
-            z-index:999;
+            z-index: 999;
         }
+
         .left {
             width: 16%;
             height: 10%;
@@ -192,6 +203,7 @@
             left: 29%;
             top: 85%;
         }
+
         .right {
             width: 16%;
             height: 10%;
@@ -199,6 +211,7 @@
             left: 55%;
             top: 85%;
         }
+
         .tree {
             position: absolute;
             width: 30%;
@@ -208,19 +221,19 @@
 
         .using-time-span {
             position: absolute;
-            width:28%;
+            width: 28%;
             left: 5%;
             top: 20%;
             font-size: 30px;
             color: #FF9900;
             font-style: italic;
             font-family: fantasy;
-
         }
-        .using-time-span-text{
-            display:block;
-            float:left;
-            margin-left:5%;
+
+        .using-time-span-text {
+            display: block;
+            float: left;
+            margin-left: 5%;
         }
     </style>
 
@@ -237,24 +250,24 @@
         <img class="jiasu" src="img/jiasu.png" />
         <img class="mbanana hide" src="img/banana.png" />
         <span class="miles"></span>
-        <img class="bike bike-left"  src="img/bike.png" />
+        <img class="bike bike-left" src="img/bike.png" />
         <img class="left" src="img/left.png" />
         <img class="right" src="img/right.png" />
         <div class="using-time-span"><span class="using-time-span-text">0.00</span><span style="display:block;float:right">&nbsp;S&nbsp;</span></div>
         <img class="tree" src="img/tree.png" />
-        <img src="img/tea.png" />
     </div>
 </body>
 <script>
-    var mtime =0;
+    var a = new Array();
+    var mtime = 0;
     var miles = 0;//
     var maxmiles = 1000;
     var gametimer;
     var map = {
         banana800: {
-            isLeft:true,
-            left:35,
-            top:40
+            isLeft: true,
+            left: 35,
+            top: 40
         },
         tea920: {
             isLeft: true,
@@ -344,98 +357,168 @@
         $('.right').on('singleTap', function () {
             $('.bike').removeClass("bike-left").addClass("bike-right");
         })
-        function tea(_maxmiles) {
-            var i = 0;
-            if (map["tea" + _maxmiles].isLeft == true) {
-                var teastr = " <img id='tea-" + _maxmiles + "' class='hide' src='img/tea.png' />";
-                $('.page-index').append(teastr);
-                $('#tea-' + _maxmiles).addClass("tea-left-start").removeClass("hide");
-                var t = setInterval(function () {
-                    i++;
-                    $('#tea-' + _maxmiles).css("top", (40 + i * 1.5) + "%");
-                    $('#tea-' + _maxmiles).css("height", (5 + i *0.5) + "%");
-                    $('#tea-' + _maxmiles).css("left", (40 - i * 1.5) + "%");
-
-                    if (i == 10) {
-                        $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-left-start");
-                        clearInterval(t);
-                    }
-                }, 500 - 100 * speed);
-            }
-            else {
-                var teastr = " <img id='tea-" + _maxmiles + "' class='hide' src='img/tea.png' />";
-                $('.page-index').append(teastr);
-                $('#tea-' + _maxmiles).addClass("tea-right-start").removeClass("hide");
-                var t2 = setInterval(function () {
-                    i++;
-                    $('#tea-' + _maxmiles).css("top", (40 + i * 1.5) + "%");
-                    $('#tea-' + _maxmiles).css("height", (5 + i * 0.5) + "%");
-                    $('#tea-' + _maxmiles).css("left", (55 + i * 1) + "%");
-                    if (i == 10) {
-                        $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-right-start");
-                        clearInterval(t2);
-                    }
-                }, 500 - 100 * speed);
-            }
-        }
-        function banana(_maxmiles) {
-            var i = 0;
-            if (map["banana" + _maxmiles].isLeft == true) {
-                var bananastr = " <img id='banana-" + _maxmiles + "' class='hide' src='img/banana.png' />";
-                $('.page-index').append(bananastr);
-                $('#banana-'+_maxmiles).addClass("banana-left-start").removeClass("hide");
-                var t = setInterval(function () {
-                    i++;
-                    $('#banana-' + _maxmiles).css("top", (40 + i * 2) + "%");
-                    $('#banana-' + _maxmiles).css("width", (10 + i * 1) + "%");
-                    $('#banana-' + _maxmiles).css("left", (35 - i * 2.5) + "%");
-                 
-                    if (i == 10) {
-                        $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-left-start");
-                        clearInterval(t);
-                    }
-                }, 500 - 100 * speed);
-            }
-            else {
-                var bananastr = " <img id='banana-" + _maxmiles + "' class='hide' src='img/banana.png' />";
-                $('.page-index').append(bananastr);
-                $('#banana-' + _maxmiles).addClass("banana-right-start").removeClass("hide");
-                var t2 = setInterval(function () {
-                    i++;
-                    $('#banana-' + _maxmiles).css("top", (40 + i * 2) + "%");
-                    $('#banana-' + _maxmiles).css("width", (10 + i * 1) + "%");
-                    $('#banana-' + _maxmiles).css("left", (55 + i * 1) + "%");
-                    if (i == 10) {
-                        $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-right-start");
-                        clearInterval(t2);
-                    }
-                }, 500 - 100 * speed);
-            }
-        }
-        
-
       
+        function leftTeaAni(_maxmiles) {
+            if (a[_maxmiles] == 10) {
+                if ($('.bike').hasClass("bike-left")) {
+                    console.log(1);
+                }
+                $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-left-start");
+                return false;
+            }
+            else {
+                setTimeout(function () {
+                    a[_maxmiles]++;
+                    $('#tea-' + _maxmiles).css("top", (40 + a[_maxmiles] * 1.5) + "%");
+                    $('#tea-' + _maxmiles).css("height", (5 + a[_maxmiles] * 0.5) + "%");
+                    $('#tea-' + _maxmiles).css("left", (40 - a[_maxmiles] * 1.5) + "%");
+                    leftTeaAni(_maxmiles);
+
+                }, 500 - 100 * speed);
+            }
+        }
+        function rightTeaAni(_maxmiles) {
+            if (a[_maxmiles] == 10) {
+                if ($('.bike').hasClass("bike-right")) {
+                    console.log(2);
+                }
+                $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-right-start");
+                return false;
+            }
+            else {
+                setTimeout(function () {
+                    a[_maxmiles]++;
+                    $('#tea-' + _maxmiles).css("top", (40 + a[_maxmiles] * 1.5) + "%");
+                    $('#tea-' + _maxmiles).css("height", (5 + a[_maxmiles] * 0.5) + "%");
+                    $('#tea-' + _maxmiles).css("left", (55 + a[_maxmiles] * 1) + "%");
+                    rightTeaAni(_maxmiles);
+
+                }, 500 - 100 * speed);
+            }
+        }
+        function tea(_maxmiles, lor) {
+            if (a[_maxmiles] == undefined) {
+                a[_maxmiles] = 0;
+            }
+            if (a[_maxmiles] == 10) {
+                return false;
+            }
+            switch (lor) {
+                case 0://left
+                    var teastr = " <img id='tea-" + _maxmiles + "' class='hide' src='img/tea.png' />";
+                    $('.page-index').append(teastr);
+                    $('#tea-' + _maxmiles).addClass("tea-left-start").removeClass("hide");
+                    leftTeaAni(_maxmiles);
+                    break;
+                case 1:
+                    var teastr = " <img id='tea-" + _maxmiles + "' class='hide' src='img/tea.png' />";
+                    $('.page-index').append(teastr);
+                    $('#tea-' + _maxmiles).addClass("tea-right-start").removeClass("hide");
+                    leftTeaAni(_maxmiles);
+                    rightTeaAni(_maxmiles);
+
+                    break;
+                default: break;
+            }
+        }
+
+        function leftBananaAni(_maxmiles) {
+            if (a[_maxmiles] == 10) {
+                if ($('.bike').hasClass("bike-left")) {
+                    console.log(3);
+                }
+                $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-left-start");
+                return false;
+            }
+            else {
+                setTimeout(function () {
+                    a[_maxmiles]++;
+
+                    $('#banana-' + _maxmiles).css("top", (40 + a[_maxmiles] * 2) + "%");
+                    $('#banana-' + _maxmiles).css("width", (10 + a[_maxmiles] * 1) + "%");
+                    $('#banana-' + _maxmiles).css("left", (35 - a[_maxmiles] * 2.5) + "%");
+                    leftBananaAni(_maxmiles);
+
+                }, 500 - 100 * speed);
+            }
+        }
+        function rightBananaAni(_maxmiles) {
+            if (a[_maxmiles] == 10) {
+                if ($('.bike').hasClass("bike-right")) {
+                    console.log(4);
+                }
+                $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-right-start");
+                return false;
+            }
+            else {
+                setTimeout(function () {
+                    a[_maxmiles]++;
+                    $('#banana-' + _maxmiles).css("top", (40 + a[_maxmiles] * 2) + "%");
+                    $('#banana-' + _maxmiles).css("width", (10 + a[_maxmiles] * 1) + "%");
+                    $('#banana-' + _maxmiles).css("left", (55 + a[_maxmiles] * 1) + "%");
+                    rightBananaAni(_maxmiles);
+
+                }, 500 - 100 * speed);
+            }
+        }
+        function banana(_maxmiles, lor) {
+            if (a[_maxmiles] == undefined) {
+                a[_maxmiles] = 0;
+            }
+            if (a[_maxmiles] == 10) {
+                return false;
+            }
+            switch (lor) {
+                case 0://left
+                    var bananastr = " <img id='banana-" + _maxmiles + "' class='hide' src='img/banana.png' />";
+                    $('.page-index').append(bananastr);
+                    $('#banana-' + _maxmiles).addClass("banana-left-start").removeClass("hide");
+                    leftBananaAni(_maxmiles);
+                    break;
+                case 1:
+                    var bananastr = " <img id='banana-" + _maxmiles + "' class='hide' src='img/banana.png' />";
+                    $('.page-index').append(bananastr);
+                    $('#banana-' + _maxmiles).addClass("banana-right-start").removeClass("hide");
+                    rightBananaAni(_maxmiles);
+
+                    break;
+                default: break;
+            }
+        }
+
+
+
         function GameTimerGo() {
-           go(500);
-           gametimer=  setInterval(function () {
+            go(500);
+            gametimer = setInterval(function () {
                 mtime += 10;
                 $('.using-time-span-text').text((mtime / 1000).toFixed(2));
             }, 10);
         }
         function go(_speed) {
-            
+
             setTimeout(function () {
                 miles++;
-                $('.miles').text("距离终点还剩：" + (maxmiles-=10) + "米");
+                $('.miles').text("距离终点还剩：" + (maxmiles -= 10) + "米");
                 if (maxmiles <= 0) {
                     clearInterval(gametimer);
                     return false;
                 }
                 if (map.hasOwnProperty("banana" + maxmiles)) {
-                    banana(maxmiles);
+                    if (map["banana" + maxmiles].isLeft == true) {
+                        banana(maxmiles, 0);
+                    }
+                    else {
+                        banana(maxmiles, 1);
+                    }
                 }
                 if (map.hasOwnProperty("tea" + maxmiles)) {
-                    tea(maxmiles);
+                    if (map["tea" + maxmiles].isLeft == true) {
+                        tea(maxmiles, 0);
+                    }
+                    else {
+                        tea(maxmiles, 1);
+                    }
                 }
                 ii++;
                 if (ii % 2 == 0) {
@@ -447,10 +530,10 @@
                 if (speed == 5) {
                     speed = 4;
                 }
-                go(500-100*speed);
+                go(500 - 100 * speed);
             }, _speed);
         }
-        
+
         //setInterval(function () {
         //    ii++;
         //    if (ii % 2 == 0) {
@@ -462,10 +545,10 @@
 
         //}, 500-10*speed);
         // GameTimerStart();
-        $('.jiasu').on('singleTap',function(){
+        $('.jiasu').on('singleTap', function () {
             speed++;
         })
-            
+
     })
 </script>
 
