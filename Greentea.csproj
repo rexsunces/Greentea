@@ -64,6 +64,9 @@
     <Content Include="code\img\banana.png" />
     <Content Include="code\img\bike.png" />
     <Content Include="code\img\green-back-new.png" />
+    <Content Include="code\img\roadline_new1.png" />
+    <Content Include="code\img\green-back-new2.png" />
+    <Content Include="code\img\green-back-new3.png" />
     <Content Include="code\img\green-back.png" />
     <Content Include="code\img\jiasu.png" />
     <Content Include="code\img\kualan3.png" />
@@ -71,6 +74,8 @@
     <Content Include="code\img\loading.png" />
     <Content Include="code\img\right.png" />
     <Content Include="code\img\roadline.png" />
+    <Content Include="code\img\roadline_new.png" />
+    <Content Include="code\img\roadline_new4.png" />
     <Content Include="code\img\tea.png" />
     <Content Include="code\img\tree.png" />
     <Content Include="code\index.html" />
