@@ -154,7 +154,14 @@
             width: 5%;
             height: 50%;
             left: 48%;
-            top: 40%;
+            top: 35%;
+        }
+        .roadline-long {
+            position: absolute;
+            width: 5%;
+            height: 60%;
+            left: 48%;
+            top: 35%;
         }
 
         .jiasu {
@@ -319,6 +326,7 @@
     </div>
     <div class="page page-index hide ">
         <img class="roadline" src="img/roadline_new4.png" />
+        <img class="roadline-long hide" src="img/road-long.png" />
         <img class="jiasu" src="img/jiasu.png" />
         <img class="mbanana hide" src="img/banana.png" />
         <span class="miles"></span>
@@ -329,6 +337,7 @@
         <div class="using-time-span">0.00S</div>
         <div class="timeplus"> +1 S</div>
         <img class="tree" src="img/tree.png" />
+
     </div>
 </body>
 <script>
@@ -635,10 +644,13 @@
                 }
                 ii++;
                 if (ii % 2 == 0) {
-                    $('.roadline').css("top", "43%");
+                    $('.roadline-long').addClass("hide");
+                    $('.roadline').removeClass("hide");
+
                 }
                 else {
-                    $('.roadline').css("top", "35%");
+                    $('.roadline').addClass("hide");
+                    $('.roadline-long').removeClass("hide");
                 }
                 if (speed == 5) {
                     speed = 4;
