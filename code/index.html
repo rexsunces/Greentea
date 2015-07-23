@@ -50,7 +50,38 @@
                 top: 50%;
             }
         }
+        @-webkit-keyframes mtime {
+            0% {
+                opacity: 1;
+                top: 20%;
+            }
 
+
+
+
+
+            100% {
+
+                top: 10%;
+                opacity:0;
+            }
+        }
+
+        @keyframes mtime {
+            0% {
+                opacity: 1;
+                top: 20%;
+            }
+
+
+
+
+
+            100% {
+                top: 10%;
+                opacity: 0;
+            }
+        }
         .myani {
             animation: myfirst 2s;
             -moz-animation: myfirst 2s; /* Firefox */
@@ -62,6 +93,7 @@
         body {
             padding: 0px;
             margin: 0px;
+            font-family:'Microsoft YaHei';
         }
 
         .hide {
@@ -172,12 +204,17 @@
             top: 55%;
             left: 65%;*/
         }
-
-        .miles {
+        .final-start {
+            width: 8%;
+            left: 47%;
             position: absolute;
-            top: 20%;
-            font-size: 50px;
-            color: white;
+            top: 38%;
+        }
+        .final-end {
+            width: 80%;
+            left: 12%;
+            position: absolute;
+            top: 30%;
         }
 
         .bike-left {
@@ -222,18 +259,53 @@
         .using-time-span {
             position: absolute;
             width: 32%;
-            left: 5%;
+            left: 10%;
             top: 20%;
-            font-size: 30px;
-            color: #FF9900;
-            font-style: italic;
-            font-family: fantasy;
+            font-size: 20px;
+            color: crimson;
+            font-weight: bolder;
+            z-index: 999;
+            /*font-style: italic;
+            font-family: fantasy;*/
         }
+        .miles {
+            position: absolute;
+            width: 30%;
+            top: 20%;
+            left: 70%;
+            font-size: 20px;
+            color: crimson;
+            font-weight: bolder;
+        }
+        .textmask {
+            position: absolute;
+            width: 80%;
+            height:25px;
+            left: 10%;
+            top: 20%;
+            border-radius:10px;
+            background-color:lightblue;
+            opacity:0.7;
+        }
+        .timeplus-ani {
+            animation: mtime 1s;
+            -moz-animation: mtime 1s; /* Firefox */
+            -webkit-animation: mtime 1s; /* Safari 和 Chrome */
+            -o-animation: mtime 10s; /* Opera */
+            animation-timing-function: linear;
+            animation-fill-mode: both;
 
-        .using-time-span-text {
-            display: block;
-            float: left;
-            margin-left: 5%;
+        }
+        .timeplus {
+            opacity: 0;
+            position: absolute;
+            width: 15%;
+            left: 40%;
+            top: 20%;
+            font-size: 20px;
+            color: red;
+            font-weight: bolder;
+            z-index: 999;
         }
     </style>
 
@@ -253,7 +325,9 @@
         <img class="bike bike-left" src="img/bike.png" />
         <img class="left" src="img/left.png" />
         <img class="right" src="img/right.png" />
-        <div class="using-time-span"><span class="using-time-span-text">0.00</span><span style="display:block;float:right">&nbsp;S&nbsp;</span></div>
+        <div class="textmask"></div>
+        <div class="using-time-span">0.00S</div>
+        <div class="timeplus"> +1 S</div>
         <img class="tree" src="img/tree.png" />
     </div>
 </body>
@@ -261,7 +335,7 @@
     var a = new Array();
     var mtime = 0;
     var miles = 0;//
-    var maxmiles = 1000;
+    var maxmiles = 1010;
     var gametimer;
     var map = {
         banana800: {
@@ -293,7 +367,11 @@
             isLeft: false,
             left: 55,
             top: 40
+        },
+        final100:{
+        
         }
+
 
 
     }
@@ -361,7 +439,10 @@
         function leftTeaAni(_maxmiles) {
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-left")) {
-                    console.log(1);
+                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
+                    $('#timeplus'+_maxmiles).addClass("timeplus-ani");
+                    mtime += 1000;
+                  
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-left-start");
                 return false;
@@ -380,7 +461,10 @@
         function rightTeaAni(_maxmiles) {
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-right")) {
-                    console.log(2);
+                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
+                    $('#timeplus' + _maxmiles).addClass("timeplus-ani");
+                    mtime += 1000;
+                   
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-right-start");
                 return false;
@@ -414,7 +498,6 @@
                     var teastr = " <img id='tea-" + _maxmiles + "' class='hide' src='img/tea.png' />";
                     $('.page-index').append(teastr);
                     $('#tea-' + _maxmiles).addClass("tea-right-start").removeClass("hide");
-                    leftTeaAni(_maxmiles);
                     rightTeaAni(_maxmiles);
 
                     break;
@@ -425,7 +508,9 @@
         function leftBananaAni(_maxmiles) {
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-left")) {
-                    console.log(3);
+                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
+                    $('#timeplus' + _maxmiles).addClass("timeplus-ani");
+                    mtime += 1000;
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-left-start");
                 return false;
@@ -445,7 +530,9 @@
         function rightBananaAni(_maxmiles) {
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-right")) {
-                    console.log(4);
+                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
+                    $('#timeplus' + _maxmiles).addClass("timeplus-ani");
+                    mtime += 1000;
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-right-start");
                 return false;
@@ -485,21 +572,44 @@
                 default: break;
             }
         }
+        function finalCreate(_maxmiles) {
+            var finalstr = " <img id='final-" + _maxmiles + "' class='hide' src='img/final.png' />";
+            $('.page-index').append(finalstr);
+            $('#final-' + _maxmiles).addClass("final-start").removeClass("hide");
+            finalGo(_maxmiles);
+        }
+        function finalGo(_maxmiles) {
+            if (a[_maxmiles] == undefined) {
+                a[_maxmiles] = 0;
+            }
+            if (a[_maxmiles] == 10) {
+                return false;
+            }
+            else {
+                setTimeout(function () {
+                    a[_maxmiles]++;
+                    $('#final-' + _maxmiles).css("top", (38 - a[_maxmiles] * 0.8) + "%");
+                    $('#final-' + _maxmiles).css("width", (8 + a[_maxmiles] * 7.2) + "%");
+                    $('#final-' + _maxmiles).css("left", (47 - a[_maxmiles] * 3.5) + "%");
+                    finalGo(_maxmiles);
 
+                }, 500 - 100 * speed);
+            }
+        }
 
 
         function GameTimerGo() {
             go(500);
             gametimer = setInterval(function () {
                 mtime += 10;
-                $('.using-time-span-text').text((mtime / 1000).toFixed(2));
+                $('.using-time-span').text((mtime / 1000).toFixed(2)+"S");
             }, 10);
         }
         function go(_speed) {
 
             setTimeout(function () {
                 miles++;
-                $('.miles').text("距离终点还剩：" + (maxmiles -= 10) + "米");
+                $('.miles').text((maxmiles -= 10) + "米");
                 if (maxmiles <= 0) {
                     clearInterval(gametimer);
                     return false;
@@ -519,6 +629,9 @@
                     else {
                         tea(maxmiles, 1);
                     }
+                }
+                if (map.hasOwnProperty("final" + maxmiles)) {
+                    finalCreate(maxmiles);
                 }
                 ii++;
                 if (ii % 2 == 0) {
