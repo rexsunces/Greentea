@@ -304,7 +304,7 @@
 
         }
         .timeplus {
-            opacity: 0;
+            opacity: 1;
             position: absolute;
             width: 15%;
             left: 40%;
@@ -335,7 +335,6 @@
         <img class="right" src="img/right.png" />
         <div class="textmask"></div>
         <div class="using-time-span">0.00S</div>
-        <div class="timeplus"> +1 S</div>
         <img class="tree" src="img/tree.png" />
 
     </div>
@@ -435,7 +434,7 @@
             PageCtl.pageMove(PageCtl.effects.fade, "index");
         }
     };
-
+    var $j = jQuery.noConflict();
     $(function () {
         GameTimerGo();
         $('.left').on('singleTap', function () {
@@ -449,7 +448,7 @@
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-left")) {
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
-                    $('#timeplus'+_maxmiles).addClass("timeplus-ani");
+                    $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
                   
                 }
@@ -471,7 +470,7 @@
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-right")) {
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
-                    $('#timeplus' + _maxmiles).addClass("timeplus-ani");
+                    $j('#timeplus' + _maxmiles).animate({opacity:0,top:'13%'},500)
                     mtime += 1000;
                    
                 }
@@ -518,7 +517,7 @@
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-left")) {
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
-                    $('#timeplus' + _maxmiles).addClass("timeplus-ani");
+                    $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-left-start");
@@ -540,7 +539,7 @@
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-right")) {
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
-                    $('#timeplus' + _maxmiles).addClass("timeplus-ani");
+                    $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-right-start");
