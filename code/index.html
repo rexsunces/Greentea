@@ -154,14 +154,14 @@
             width: 5%;
             height: 50%;
             left: 48%;
-            top: 35%;
+            top: 38%;
         }
         .roadline-long {
             position: absolute;
             width: 5%;
             height: 60%;
             left: 48%;
-            top: 35%;
+            top: 38%;
         }
 
         .jiasu {
@@ -314,6 +314,28 @@
             font-weight: bolder;
             z-index: 999;
         }
+        .video {
+            position: relative;
+            background-image: url('img/video.png');
+            background-size: 100% 100%;
+            width: 40%;
+            height: 20%;
+        }
+        .video-right {
+            left: 60%;
+        }
+        .video-left{
+            left:5%;
+        }
+        .video-point-now {
+            height: 5%;
+            width: 5%;
+            left:30%;
+            background-color: red;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 2%;
+        }
     </style>
 
 </head>
@@ -326,7 +348,7 @@
     </div>
     <div class="page page-index hide ">
         <img class="roadline" src="img/roadline_new4.png" />
-        <img class="roadline-long hide" src="img/road-long.png" />
+        <img class="roadline-long hide" src="img/road-small.png" />
         <img class="jiasu" src="img/jiasu.png" />
         <img class="mbanana hide" src="img/banana.png" />
         <span class="miles"></span>
@@ -336,15 +358,18 @@
         <div class="textmask"></div>
         <div class="using-time-span">0.00S</div>
         <img class="tree" src="img/tree.png" />
-
+        <div class="video video-right">
+            <div class="video-point-now"></div>
+        </div>
     </div>
 </body>
 <script>
     var a = new Array();
     var mtime = 0;
     var miles = 0;//
-    var maxmiles = 1010;
+    var maxmiles = 1000;
     var gametimer;
+    var roadVideo="";
     var map = {
         banana800: {
             isLeft: true,
@@ -436,6 +461,15 @@
     };
     var $j = jQuery.noConflict();
     $(function () {
+        var x = "980,960,930,890,820,710,610,510,410,300,200,100";
+        var x1 = x.split(",");
+        var j = 0;
+        setInterval(function () {
+            if(j<x1.length){
+               $('.video-point-now').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
+            }
+            j++;
+        }, 1000)
         GameTimerGo();
         $('.left').on('singleTap', function () {
             $('.bike').removeClass("bike-right").addClass("bike-left");
@@ -610,19 +644,23 @@
             go(500);
             gametimer = setInterval(function () {
                 mtime += 10;
-                $('.using-time-span').text((mtime / 1000).toFixed(2)+"S");
+                $('.using-time-span').text((mtime / 1000).toFixed(2) + "S");
+                if (mtime % 1000 == 0) {
+                    roadVideo +=( (maxmiles) + "" + ",");
+                }
             }, 10);
         }
         function go(_speed) {
 
             setTimeout(function () {
                 miles++;
-                $('.miles').text((maxmiles -= 10) + "米");
+                $('.miles').text(maxmiles + "米");
                 if (maxmiles <= 0) {
                     clearInterval(gametimer);
                     return false;
                 }
                 if (map.hasOwnProperty("banana" + maxmiles)) {
+                    
                     if (map["banana" + maxmiles].isLeft == true) {
                         banana(maxmiles, 0);
                     }
@@ -654,6 +692,7 @@
                 if (speed == 5) {
                     speed = 4;
                 }
+                maxmiles -= 10;
                 go(500 - 100 * speed);
             }, _speed);
         }

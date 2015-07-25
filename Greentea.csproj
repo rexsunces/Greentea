@@ -63,7 +63,11 @@
     <Content Include="code\css\swiper.css" />
     <Content Include="code\img\banana.png" />
     <Content Include="code\img\bike.png" />
+    <Content Include="code\img\final.png" />
     <Content Include="code\img\green-back-new.png" />
+    <Content Include="code\img\kualan1.png" />
+    <Content Include="code\img\kualan2.png" />
+    <Content Include="code\img\road-long.png" />
     <Content Include="code\img\roadline_new1.png" />
     <Content Include="code\img\green-back-new2.png" />
     <Content Include="code\img\green-back-new3.png" />
@@ -78,6 +82,7 @@
     <Content Include="code\img\roadline_new4.png" />
     <Content Include="code\img\tea.png" />
     <Content Include="code\img\tree.png" />
+    <Content Include="code\img\video.png" />
     <Content Include="code\index.html" />
     <Content Include="code\js\bootstrap.min.js" />
     <Content Include="code\js\index.js" />
