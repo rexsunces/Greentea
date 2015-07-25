@@ -68,6 +68,7 @@
     <Content Include="code\img\kualan1.png" />
     <Content Include="code\img\kualan2.png" />
     <Content Include="code\img\road-long.png" />
+    <Content Include="code\img\road-small.png" />
     <Content Include="code\img\roadline_new1.png" />
     <Content Include="code\img\green-back-new2.png" />
     <Content Include="code\img\green-back-new3.png" />

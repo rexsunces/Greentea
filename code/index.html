@@ -283,6 +283,7 @@
             font-size: 20px;
             color: crimson;
             font-weight: bolder;
+            z-index:999;
         }
         .textmask {
             position: absolute;
@@ -330,7 +331,16 @@
         .video-point-now {
             height: 5%;
             width: 5%;
-            left:30%;
+            left: 30%;
+            background-color: floralwhite;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 2%;
+        }
+        .video-point-first {
+            height: 5%;
+            width: 5%;
+            left: 65%;
             background-color: red;
             border-radius: 10px;
             position: absolute;
@@ -360,6 +370,7 @@
         <img class="tree" src="img/tree.png" />
         <div class="video video-right">
             <div class="video-point-now"></div>
+            <div class="video-point-first"></div>
         </div>
     </div>
 </body>
@@ -369,7 +380,8 @@
     var miles = 0;//
     var maxmiles = 1000;
     var gametimer;
-    var roadVideo="";
+    var firstRoadVideo = "980,960,930,890,820,710,610,510,410,300,200,100";
+    var currentRoadVideo = "";
     var map = {
         banana800: {
             isLeft: true,
@@ -461,14 +473,18 @@
     };
     var $j = jQuery.noConflict();
     $(function () {
-        var x = "980,960,930,890,820,710,610,510,410,300,200,100";
-        var x1 = x.split(",");
+        var x1 = firstRoadVideo.split(",");
         var j = 0;
         setInterval(function () {
+            $('.video-point-now').css("top", parseFloat(maxmiles/ 1100).toFixed(2) * 100 + "%");
             if(j<x1.length){
-               $('.video-point-now').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
+               $('.video-point-first').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
+            }
+            else {
+                $('.video-point-first').css("top", 0 + "%");
             }
             j++;
+
         }, 1000)
         GameTimerGo();
         $('.left').on('singleTap', function () {
@@ -484,6 +500,7 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
+                    maxmiles =maxmiles+ parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
                   
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-left-start");
@@ -506,6 +523,7 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({opacity:0,top:'13%'},500)
                     mtime += 1000;
+                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
                    
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-right-start");
@@ -553,6 +571,7 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
+                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-left-start");
                 return false;
@@ -575,6 +594,7 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
+                    maxmiles = maxmiles +parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-right-start");
                 return false;
@@ -646,7 +666,7 @@
                 mtime += 10;
                 $('.using-time-span').text((mtime / 1000).toFixed(2) + "S");
                 if (mtime % 1000 == 0) {
-                    roadVideo +=( (maxmiles) + "" + ",");
+                    currentRoadVideo += ((maxmiles) + "" + ",");
                 }
             }, 10);
         }
