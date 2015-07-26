@@ -561,7 +561,7 @@
     var miles = 0;//
     var maxmiles = 1000;
     var gametimer;
-    var firstRoadVideo = "980,960,930,890,820,710,610,510,410,300,200,100";
+    var firstRoadVideo;
     var currentRoadVideo = "";
     var map=new Array();
     //var map = {
@@ -963,6 +963,7 @@
                 miles++;
                 $('.miles').text(maxmiles + "米");
                 if (maxmiles <= 0) {//游戏结束
+                    SubmitScore();
                     clearInterval(gametimer);
                     return false;
                 }
@@ -1031,8 +1032,10 @@
         $('.jiasu').on('singleTap', function () {
             if (gameStart == false) {
                 gameStart = true;
-                var x1 = firstRoadVideo.split(",");
                 var j = 0;
+                InitMap();
+                GetFirst();
+                var x1 = firstRoadVideo.split(",");
                 setInterval(function () {
                     $('.video-point-now').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
                     if (j < x1.length) {
@@ -1044,7 +1047,7 @@
                     j++;
 
                 }, 1000);
-                InitMap();
+
                 GameTimerGo();
             }
             else{
@@ -1053,6 +1056,16 @@
         })
 
     })
+
+    function GameEnd() {
+        speed = 1;
+        gameStart = false;
+        currentRoadVideo = "";
+        firstRoadVideo = "";
+        map = {};
+        maxmiles = 1000;
+        ii = 0;
+    }
 
     function InitMap() {
         for (var i = 200; i < 1000; i += 100) {
@@ -1135,6 +1148,8 @@
             if (data.success = true) {
                 //更新成功
                 alert("恭喜完成疯狂急速骑行，快快邀请好友一起挑战吧！");
+                GameEnd();
+                PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
                 //GameReset();
             }
             else {
