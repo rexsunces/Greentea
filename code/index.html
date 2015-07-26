@@ -287,6 +287,30 @@
             top: 55%;
             left: 65%;*/
         }
+        .kualan-left-start {
+            position: absolute;
+            left: 40%;
+            width: 10%;
+            top: 40%;
+        }
+        .kualan-left-end {
+            position: absolute;
+            left: 5%;
+            width: 40%;
+            top: 45%;
+        }
+        .kualan-right-start {
+            position: absolute;
+            left: 52%;
+            width: 10%;
+            top: 40%;
+        }
+        .kualan-right-end {
+            position: absolute;
+            left: 55%;
+            width: 40%;
+            top: 45%;
+        }
         .final-start {
             width: 8%;
             left: 47%;
@@ -388,6 +412,17 @@
             top: 20%;
             font-size: 20px;
             color: red;
+            font-weight: bolder;
+            z-index: 997;
+        }
+        .timeminus {
+            opacity: 1;
+            position: absolute;
+            width: 15%;
+            left: 40%;
+            top: 20%;
+            font-size: 20px;
+            color: green;
             font-weight: bolder;
             z-index: 997;
         }
@@ -504,44 +539,49 @@
     var gametimer;
     var firstRoadVideo = "980,960,930,890,820,710,610,510,410,300,200,100";
     var currentRoadVideo = "";
-    var map = {
-        banana800: {
-            isLeft: true,
-            left: 35,
-            top: 40
-        },
-        tea920: {
-            isLeft: true,
-            left: 55,
-            top: 40
-        },
-        banana950: {
-            isLeft: false,
-            left: 55,
-            top: 40
-        },
-        banana700: {
-            isLeft: true,
-            left: 35,
-            top: 40
-        },
-        banana500: {
-            isLeft: false,
-            left: 55,
-            top: 40
-        },
-        tea300: {
-            isLeft: false,
-            left: 55,
-            top: 40
-        },
-        final100:{
+    var map=new Array();
+    //var map = {
+    //    banana800: {
+    //        isLeft: true,
+    //        left: 35,
+    //        top: 40
+    //    },
+    //    tea920: {
+    //        isLeft: true,
+    //        left: 55,
+    //        top: 40
+    //    },
+    //    banana950: {
+    //        isLeft: false,
+    //        left: 55,
+    //        top: 40
+    //    },
+    //    kualan750:{
+    //        isLeft: false
+    //    },
+    //    banana700: {
+    //        isLeft: true,
+    //        left: 35,
+    //        top: 40
+    //    },
+    //    kualan620:{
+    //        isLeft:true
+    //    },
+    //    banana500: {
+    //        isLeft: false,
+    //        left: 55,
+    //        top: 40
+    //    },
+    //    tea300: {
+    //        isLeft: false,
+    //        left: 55,
+    //        top: 40
+    //    },
+    //    final100:{
         
-        }
+    //    }
 
-
-
-    }
+    //}
     var ii = 0;
     var speed = 1;
     var PageCtl = {
@@ -656,10 +696,10 @@
         function leftTeaAni(_maxmiles) {
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-left")) {
-                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
-                    $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
-                    mtime += 1000;
-                    maxmiles =maxmiles+ parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    $('.page-index').append("<div id='timeminus" + _maxmiles + "' class='timeminus'> -1 S</div>");
+                    $j('#timeminus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
+                    mtime -= 1000;
+                    maxmiles =maxmiles - parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
                   
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-left-start");
@@ -679,10 +719,10 @@
         function rightTeaAni(_maxmiles) {
             if (a[_maxmiles] == 10) {
                 if ($('.bike').hasClass("bike-right")) {
-                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
-                    $j('#timeplus' + _maxmiles).animate({opacity:0,top:'13%'},500)
-                    mtime += 1000;
-                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    $('.page-index').append("<div id='timeminus" + _maxmiles + "' class='timeminus'> -1 S</div>");
+                    $j('#timeminus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
+                    mtime -= 1000;
+                    maxmiles = maxmiles - parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
                    
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-right-start");
@@ -699,6 +739,81 @@
                 }, 500 - 100 * speed);
             }
         }
+
+
+
+        function leftKualanAni(_maxmiles) {
+            if (a[_maxmiles] == 10) {
+                if ($('.bike').hasClass("bike-left")) {
+                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
+                    $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
+                    mtime += 1000;
+                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+
+                }
+                $('#kualan-' + _maxmiles).addClass("hide").removeClass("kualan-left-start");
+                return false;
+            }
+            else {
+                setTimeout(function () {
+                    a[_maxmiles]++;
+                    $('#kualan-' + _maxmiles).css("top", (40 + a[_maxmiles] * 0.5) + "%");
+                    $('#kualan-' + _maxmiles).css("width", (10 + a[_maxmiles] * 3) + "%");
+                    $('#kualan-' + _maxmiles).css("left", (40 - a[_maxmiles] * 3.5) + "%");
+                    leftKualanAni(_maxmiles);
+
+                }, 500 - 100 * speed);
+            }
+        }
+        function rightKualanAni(_maxmiles) {
+            if (a[_maxmiles] == 10) {
+                if ($('.bike').hasClass("bike-right")) {
+                    $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
+                    $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
+                    mtime += 1000;
+                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+
+                }
+                $('#kualan-' + _maxmiles).addClass("hide").removeClass("kualan-right-start");
+                return false;
+            }
+            else {
+                setTimeout(function () {
+                    a[_maxmiles]++;
+                    $('#kualan-' + _maxmiles).css("left", (52 + a[_maxmiles] * 0.3) + "%");
+                    $('#kualan-' + _maxmiles).css("width", (10 + a[_maxmiles] * 3) + "%");
+                    $('#kualan-' + _maxmiles).css("top", (40 + a[_maxmiles] * 0.5) + "%");
+                    rightKualanAni(_maxmiles);
+
+                }, 500 - 100 * speed);
+            }
+        }
+        function kualan(_maxmiles, lor) {
+            if (a[_maxmiles] == undefined) {
+                a[_maxmiles] = 0;
+            }
+            if (a[_maxmiles] == 10) {
+                return false;
+            }
+            switch (lor) {
+                case 0://left
+                    var kuastr = " <img id='kualan-" + _maxmiles + "' class='hide' src='img/kualan3.png' />";
+                    $('.page-index').append(kuastr);
+                    $('#kualan-' + _maxmiles).addClass("kualan-left-start").removeClass("hide");
+                    leftKualanAni(_maxmiles);
+                    break;
+                case 1:
+                    var kuastr = " <img id='kualan-" + _maxmiles + "' class='hide' src='img/kualan3.png' />";
+                    $('.page-index').append(kuastr);
+                    $('#kualan-' + _maxmiles).addClass("kualan-right-start").removeClass("hide");
+                    rightKualanAni(_maxmiles);
+
+                    break;
+                default: break;
+            }
+        }
+
+
         function tea(_maxmiles, lor) {
             if (a[_maxmiles] == undefined) {
                 a[_maxmiles] = 0;
@@ -834,25 +949,38 @@
             setTimeout(function () {
                 miles++;
                 $('.miles').text(maxmiles + "米");
-                if (maxmiles <= 0) {
+                if (maxmiles <= 0) {//游戏结束
                     clearInterval(gametimer);
                     return false;
                 }
                 if (map.hasOwnProperty("banana" + maxmiles)) {
-                    
-                    if (map["banana" + maxmiles].isLeft == true) {
-                        banana(maxmiles, 0);
-                    }
-                    else {
-                        banana(maxmiles, 1);
+                    if (a[maxmiles] == undefined) {
+                        if (map["banana" + maxmiles].isLeft == true) {
+                            banana(maxmiles, 0);
+                        }
+                        else {
+                            banana(maxmiles, 1);
+                        }
                     }
                 }
                 if (map.hasOwnProperty("tea" + maxmiles)) {
-                    if (map["tea" + maxmiles].isLeft == true) {
-                        tea(maxmiles, 0);
+                    if (a[maxmiles] == undefined) {
+                        if (map["tea" + maxmiles].isLeft == true) {
+                            tea(maxmiles, 0);
+                        }
+                        else {
+                            tea(maxmiles, 1);
+                        }
                     }
-                    else {
-                        tea(maxmiles, 1);
+                }
+                if (map.hasOwnProperty("kualan" + maxmiles)) {
+                    if (a[maxmiles] == undefined) {
+                        if (map["kualan" + maxmiles].isLeft == true) {
+                            kualan(maxmiles, 0);
+                        }
+                        else {
+                            kualan(maxmiles, 1);
+                        }
                     }
                 }
                 if (map.hasOwnProperty("final" + maxmiles)) {
@@ -902,7 +1030,8 @@
                     }
                     j++;
 
-                }, 1000)
+                }, 1000);
+                InitMap();
                 GameTimerGo();
             }
             else{
@@ -911,6 +1040,56 @@
         })
 
     })
+
+    function InitMap() {
+        for (var i = 200; i < 1000; i += 100) {
+            var rand = Math.random();
+            if (rand < 0.2) {
+                var rand2 = Math.random();
+                if (rand2 < 0.5) {
+                    map["tea" + i] = {
+                        isLeft:false
+                    }
+                }
+                else {
+                    map["tea" + i] = {
+                        isLeft: true
+                    }
+                }
+
+            }
+            else if(rand<0.5) {
+                var rand2 = Math.random();
+                if (rand2 < 0.5) {
+                    map["banana" + i] = {
+                        isLeft: false
+                    }
+                }
+                else {
+                    map["banana" + i] = {
+                        isLeft: true
+                    }
+                }
+            }
+            else if (rand < 0.8) {
+                var rand2 = Math.random();
+                if (rand2 < 0.5) {
+                    map["kualan" + i] = {
+                        isLeft: false
+                    }
+                }
+                else {
+                    map["kualan" + i] = {
+                        isLeft: true
+                    }
+                }
+            }
+            else {
+
+            }
+        }
+        map["final100"] = {};
+    }
 </script>
 
 </html>
