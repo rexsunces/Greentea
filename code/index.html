@@ -141,7 +141,83 @@
         .page.page-index {
             background-image: url('img/green-back-new.png');
         }
+        .page.page-rank {
+            background-image: url('img/rank.png');
+        }
+        .page-rank .rank-return-btn {
+            top: 88%;
+            left: 5%;
+            width: 30%;
+            position: absolute;
+        }
 
+        .page-rank .rank-opacity-div {
+            position: absolute;
+            top: 18%;
+            left: 5%;
+            width: 90%;
+            height: 65%;
+            background-color: white;
+            opacity: 0.7;
+            border-radius: 20px;
+        }
+
+        .page-rank .rank-table-div {
+            position: absolute;
+            top: 20%;
+            left: 5%;
+            width: 90%;
+            min-height: 50%;
+        }
+
+        .page-rank table {
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            width: 95%;
+            text-align: center;
+            font-size: 8px;
+        }
+
+            .page-rank table th {
+                height: 20px;
+                border-radius: 5px;
+                border: 2px solid white;
+            }
+
+            .page-rank table .th-xuhao {
+                width: 12%;
+                border-radius: 5px;
+                border: 2px solid white;
+            }
+
+            .page-rank table .th-normal {
+                width: 22%;
+                border-radius: 5px;
+                border: 2px solid white;
+            }
+
+            .page-rank table td {
+                height: 20px;
+                border-radius: 5px;
+                border: 2px solid white;
+            }
+        .page.page-gaozhi{
+            background-image:url('img/gaozhi.png');
+        }
+        .page-gaozhi .gaozhi-rank-btn{
+            position:absolute;
+            top:80%;
+            left:20%;
+        }
+            .page-gaozhi .gaozhi-enter-btn {
+                position: absolute;
+                width: 70%;
+                height: 10%;
+                top: 70%;
+                left: 15%;
+                z-index: 1000;
+            }
         .kl {
             position: absolute;
             width: 10%;
@@ -228,7 +304,7 @@
             position: absolute;
             height: 40%;
             top: 45%;
-            z-index: 999;
+            z-index: 998;
         }
 
         .bike-right {
@@ -237,7 +313,7 @@
             height: 40%;
             top: 45%;
             left: 60%;
-            z-index: 999;
+            z-index: 998;
         }
 
         .left {
@@ -271,7 +347,7 @@
             font-size: 20px;
             color: crimson;
             font-weight: bolder;
-            z-index: 999;
+            z-index: 997;
             /*font-style: italic;
             font-family: fantasy;*/
         }
@@ -283,7 +359,7 @@
             font-size: 20px;
             color: crimson;
             font-weight: bolder;
-            z-index:999;
+            z-index:997;
         }
         .textmask {
             position: absolute;
@@ -313,7 +389,7 @@
             font-size: 20px;
             color: red;
             font-weight: bolder;
-            z-index: 999;
+            z-index: 997;
         }
         .video {
             position: relative;
@@ -346,6 +422,27 @@
             position: absolute;
             bottom: 2%;
         }
+        .rules {
+            position: absolute;
+            width: 80%;
+            left: 10%;
+            top: 15%;
+            z-index: 998;
+        }
+
+        .close-rule-btn {
+            position: absolute;
+            width: 10%;
+            left: 78%;
+            top: 16%;
+            z-index: 999;
+        }
+        .rule-btn {
+            position: absolute;
+            left: 25%;
+            width: 28%;
+            top: 3%;
+        }
     </style>
 
 </head>
@@ -356,12 +453,16 @@
             <div>Loading</div>
         </div>
     </div>
-    <div class="page page-index hide ">
+    <div class="page page-gaozhi hide" >
+        <div class="gaozhi-enter-btn"></div>
+        <img class="gaozhi-rank-btn" src="img/gaozhi-rank-btn.png" />
+    </div>
+    <div class="page page-index hide">
         <img class="roadline" src="img/roadline_new4.png" />
         <img class="roadline-long hide" src="img/road-small.png" />
         <img class="jiasu" src="img/jiasu.png" />
         <img class="mbanana hide" src="img/banana.png" />
-        <span class="miles"></span>
+        <span class="miles">1000米</span>
         <img class="bike bike-left" src="img/bike.png" />
         <img class="left" src="img/left.png" />
         <img class="right" src="img/right.png" />
@@ -372,9 +473,23 @@
             <div class="video-point-now"></div>
             <div class="video-point-first"></div>
         </div>
+        <div class="rule-div hide">
+            <img class="rules" src="img/rules.png" />
+            <img class="close-rule-btn" src="img/close-rule-btn.png" />
+        </div>
+        <img class="rule-btn" src="img/rule-btn.png" />
+    </div>
+    <div class="page-rank page hide">
+        <div class="rank-opacity-div">
+        </div>
+        <div class="rank-table-div">
+            <table class="rank-table"></table>
+        </div>
+        <img class="rank-return-btn" src="img/rank-return-btn.png" />
     </div>
 </body>
 <script>
+    var gameStart = false;
     var a = new Array();
     var mtime = 0;
     var miles = 0;//
@@ -468,25 +583,59 @@
 
 
         loadComplete: function () {
-            PageCtl.pageMove(PageCtl.effects.fade, "index");
+            PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
         }
     };
     var $j = jQuery.noConflict();
     $(function () {
-        var x1 = firstRoadVideo.split(",");
-        var j = 0;
-        setInterval(function () {
-            $('.video-point-now').css("top", parseFloat(maxmiles/ 1100).toFixed(2) * 100 + "%");
-            if(j<x1.length){
-               $('.video-point-first').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
+        $('.gaozhi-enter-btn').on('singleTap', function () {
+            PageCtl.pageMove(PageCtl.effects.fade, "index");
+        })
+        $('.gaozhi-rank-btn').on('singleTap', function () {
+            $('.rank-table').html("");
+            var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>骑行时间</th><th class='th-normal'>挑战次数</th><tr>";
+                    for (var i = 0; i < 9; i++) {
+                        rankstr += "<tr>" +
+                            "<td class='th-align-center'>" + parseInt(i + 1) +
+                            "</td><td class='th-align-center'>" + "哈"+
+                            "</td><td class='th-align-center'>" + i +" S" +
+                            "</td><td class='th-align-center'>"+i+
+                            "</td></tr>";
+                    }
+                    $('.rank-table').append(rankstr);
+                    PageCtl.pageMove(PageCtl.effects.fade, "rank");
+            //$.get("/index.php?r=game/getrankbytime", {
+            //    "gameId": gameId
+            //}, function (data, textStatus) {
+            //    if (data.success = true) {
+            //        //获取成功
+            //        var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>骑行时间</th><th class='th-normal'>挑战次数</th><tr>";
+            //        for (var i = 0; i < data.data.length; i++) {
+            //            rankstr += "<tr>" +
+            //                "<td class='th-align-center'>" + parseInt(i + 1) +
+            //                "</td><td class='th-align-center'>" + (data.data[i].user_name == null ? data.data[i].user_id : data.data[i].user_name) +
+            //                "</td><td class='th-align-center'>" + (data.data[i].time_used == null ? "-" : (data.data[i].time_used / 1000).toFixed(2)) + " S" +
+            //                "</td><td class='th-align-center'>" +"/**/"+
+            //                "</td></tr>";
+            //        }
+            //        $('.rank-table').append(rankstr);
+            //        PageCtl.pageMove(PageCtl.effects.fade, "rank");
+            //    }
+            //    else {
+            //        alert("数据获取失败！");
+            //    }
+            //})
+        })
+        $('.rule-btn').on('singleTap', function () {
+            if ($('.rule-div').hasClass("hide")) {
+                $('.rule-div').removeClass("hide");
             }
-            else {
-                $('.video-point-first').css("top", 0 + "%");
-            }
-            j++;
+        })
+        $('.close-rule-btn').on('singleTap', function () {
+            $('.rule-div').addClass("hide");
+        })
 
-        }, 1000)
-        GameTimerGo();
+
         $('.left').on('singleTap', function () {
             $('.bike').removeClass("bike-right").addClass("bike-left");
         })
@@ -729,7 +878,26 @@
         //}, 500-10*speed);
         // GameTimerStart();
         $('.jiasu').on('singleTap', function () {
-            speed++;
+            if (gameStart == false) {
+                gameStart = true;
+                var x1 = firstRoadVideo.split(",");
+                var j = 0;
+                setInterval(function () {
+                    $('.video-point-now').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
+                    if (j < x1.length) {
+                        $('.video-point-first').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
+                    }
+                    else {
+                        $('.video-point-first').css("top", 0 + "%");
+                    }
+                    j++;
+
+                }, 1000)
+                GameTimerGo();
+            }
+            else{
+                speed++;
+            }
         })
 
     })
