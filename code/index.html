@@ -531,6 +531,30 @@
     </div>
 </body>
 <script>
+    var nowUserId;
+    var gameId = "greentea20150726";
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+    //获取当前用户的微信Id
+    function GetNowUserId() {
+        nowUserId = getUrlParam("openid");
+        if (nowUserId != null) {
+            window.localStorage.setItem('haizhiyan01', nowUserId);
+            window.location = 'index.html?tag=0';
+            return false;
+        }
+        nowUserId = window.localStorage.getItem('haizhiyan01');
+        if (nowUserId == null || nowUserId == '') {
+            //需要授权获取用户id
+            window.location = '/wx/getopenidbyoath2.php?url=' + encodeURIComponent(window.location.pathname + window.location.search);
+            return false;
+        }
+    }
+    GetNowUserId();
+
     var gameStart = false;
     var a = new Array();
     var mtime = 0;
@@ -640,38 +664,27 @@
         })
         $('.gaozhi-rank-btn').on('singleTap', function () {
             $('.rank-table').html("");
-            var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>骑行时间</th><th class='th-normal'>挑战次数</th><tr>";
-                    for (var i = 0; i < 10; i++) {
+            $.get("/index.php?r=game/getrankbytime", {
+                "gameId": gameId
+            }, function (data, textStatus) {
+                if (data.success = true) {
+                    //获取成功
+                    var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>骑行时间</th><th class='th-normal'>挑战次数</th><tr>";
+                    for (var i = 0; i < data.data.length; i++) {
                         rankstr += "<tr>" +
                             "<td class='th-align-center'>" + parseInt(i + 1) +
-                            "</td><td class='th-align-center'>" + "哈"+
-                            "</td><td class='th-align-center'>" + i +" S" +
-                            "</td><td class='th-align-center'>"+i+
+                            "</td><td class='th-align-center'>" + formatPalyerName(data.data[i].user_name == null ? data.data[i].user_id : data.data[i].user_name) +
+                            "</td><td class='th-align-center'>" + (data.data[i].time_used == null ? "-" : (data.data[i].time_used / 1000).toFixed(2)) + " S" +
+                            "</td><td class='th-align-center'>"+(data.data[i].times)
                             "</td></tr>";
                     }
                     $('.rank-table').append(rankstr);
                     PageCtl.pageMove(PageCtl.effects.fade, "rank");
-            //$.get("/index.php?r=game/getrankbytime", {
-            //    "gameId": gameId
-            //}, function (data, textStatus) {
-            //    if (data.success = true) {
-            //        //获取成功
-            //        var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>骑行时间</th><th class='th-normal'>挑战次数</th><tr>";
-            //        for (var i = 0; i < data.data.length; i++) {
-            //            rankstr += "<tr>" +
-            //                "<td class='th-align-center'>" + parseInt(i + 1) +
-            //                "</td><td class='th-align-center'>" + (data.data[i].user_name == null ? data.data[i].user_id : data.data[i].user_name) +
-            //                "</td><td class='th-align-center'>" + (data.data[i].time_used == null ? "-" : (data.data[i].time_used / 1000).toFixed(2)) + " S" +
-            //                "</td><td class='th-align-center'>" +"/**/"+
-            //                "</td></tr>";
-            //        }
-            //        $('.rank-table').append(rankstr);
-            //        PageCtl.pageMove(PageCtl.effects.fade, "rank");
-            //    }
-            //    else {
-            //        alert("数据获取失败！");
-            //    }
-            //})
+                }
+                else {
+                    alert("数据获取失败！");
+                }
+            })
         })
         $('.rank-return-btn').on('singleTap', function () {
             PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
@@ -1089,6 +1102,92 @@
             }
         }
         map["final100"] = {};
+    }
+
+    function GetFirst() {
+        $.post("/index.php?r=game/gettoprecord", {
+            "gameId": gameId,
+        }, function (data, textStatus) {
+            if (data.success = true) {
+                //获取成功
+                if (data.data == null) {
+                    firstRoadVideo = "";
+                }
+                else {
+                    firstRoadVideo = data.data.content;
+                }
+            }
+            else {
+                alert("访问后台失败！");
+                firstRoadVideo = "";
+                //GameReset();
+
+            }
+        })
+    }
+    function SubmitScore() {
+        $.post("/index.php?r=game/play", {
+            "userId": nowUserId,
+            "gameId": gameId,
+            "timeUsed": mtime,
+            "record": currentRoadVideo.substring(0, currentRoadVideo.length - 1)
+        }, function (data, textStatus) {
+            if (data.success = true) {
+                //更新成功
+                alert("恭喜完成疯狂急速骑行，快快邀请好友一起挑战吧！");
+                //GameReset();
+            }
+            else {
+                alert("上传成绩失败！");
+                //GameReset();
+
+            }
+        })
+    }
+    function formatPalyerName(strName) {
+        var lengthx2 = 4;
+        var j = 0;
+        var str = "";
+        if (strlen(strName) > 6) {
+            // return strName.substr(0, 4) + '...';
+            for (var i = 0; i < strName.length; i++) {
+
+                if (j <= lengthx2) {
+                    var c = strName.charCodeAt(i);
+                    if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+                        j++;
+                        str = str + strName[i];
+                    }
+                    else {
+                        j = j + 2;
+                        str = str + strName[i];
+                    }
+                }
+                else {
+                    str = str + "...";
+                    break;
+                }
+            }
+            return str;
+        }
+        else {
+            return strName;
+        }
+
+    }
+    function strlen(str) {
+        var len = 0;
+        for (var i = 0; i < str.length; i++) {
+            var c = str.charCodeAt(i);
+            //单字节加1 
+            if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+                len++;
+            }
+            else {
+                len += 2;
+            }
+        }
+        return len;
     }
 </script>
 
