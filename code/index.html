@@ -205,10 +205,11 @@
         .page.page-gaozhi{
             background-image:url('img/gaozhi.png');
         }
-        .page-gaozhi .gaozhi-rank-btn{
-            position:absolute;
-            top:80%;
-            left:20%;
+        .page-gaozhi .gaozhi-rank-btn {
+            position: absolute;
+            top: 82%;
+            left: 15%;
+            width: 50%;
         }
             .page-gaozhi .gaozhi-enter-btn {
                 position: absolute;
@@ -563,7 +564,10 @@
     var gametimer;
     var firstRoadVideo;
     var currentRoadVideo = "";
-    var map=new Array();
+    var map = new Array();
+    var videoTimer;
+    var mdelay = false;
+    var mminus = false;
     //var map = {
     //    banana800: {
     //        isLeft: true,
@@ -659,10 +663,10 @@
     };
     var $j = jQuery.noConflict();
     $(function () {
-        $('.gaozhi-enter-btn').on('singleTap', function () {
+        $('.gaozhi-enter-btn').on('touchstart pointerdown', function () {
             PageCtl.pageMove(PageCtl.effects.fade, "index");
         })
-        $('.gaozhi-rank-btn').on('singleTap', function () {
+        $('.gaozhi-rank-btn').on('touchstart pointerdown', function () {
             $('.rank-table').html("");
             $.get("/index.php?r=game/getrankbytime", {
                 "gameId": gameId
@@ -686,7 +690,7 @@
                 }
             })
         })
-        $('.rank-return-btn').on('singleTap', function () {
+        $('.rank-return-btn').on('touchstart pointerdown', function () {
             PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
         })
         $('.rule-btn').on('singleTap', function () {
@@ -699,10 +703,10 @@
         })
 
 
-        $('.left').on('singleTap', function () {
+        $('.left').on('touchstart pointerdown', function () {
             $('.bike').removeClass("bike-right").addClass("bike-left");
         })
-        $('.right').on('singleTap', function () {
+        $('.right').on('touchstart pointerdown', function () {
             $('.bike').removeClass("bike-left").addClass("bike-right");
         })
       
@@ -712,7 +716,8 @@
                     $('.page-index').append("<div id='timeminus" + _maxmiles + "' class='timeminus'> -1 S</div>");
                     $j('#timeminus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime -= 1000;
-                    maxmiles =maxmiles - parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    //maxmiles =maxmiles - parseInt(parseFloat(1000 / (1000 - 100 * speed)) * 10);
+                    mminus = true;
                   
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-left-start");
@@ -726,7 +731,7 @@
                     $('#tea-' + _maxmiles).css("left", (40 - a[_maxmiles] * 1.5) + "%");
                     leftTeaAni(_maxmiles);
 
-                }, 500 - 100 * speed);
+                }, 800 - 100 * speed);
             }
         }
         function rightTeaAni(_maxmiles) {
@@ -735,7 +740,8 @@
                     $('.page-index').append("<div id='timeminus" + _maxmiles + "' class='timeminus'> -1 S</div>");
                     $j('#timeminus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime -= 1000;
-                    maxmiles = maxmiles - parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    // maxmiles = maxmiles - parseInt(parseFloat(1000 / (1000 - 100 * speed)) * 10);
+                    mminus = true;
                    
                 }
                 $('#tea-' + _maxmiles).addClass("hide").removeClass("tea-right-start");
@@ -749,7 +755,7 @@
                     $('#tea-' + _maxmiles).css("left", (55 + a[_maxmiles] * 1) + "%");
                     rightTeaAni(_maxmiles);
 
-                }, 500 - 100 * speed);
+                }, 800 - 100 * speed);
             }
         }
 
@@ -761,7 +767,8 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
-                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    // maxmiles = maxmiles + parseInt(parseFloat(1000 / (1000 - 100 * speed)) * 10);
+                    mdelay = true;
 
                 }
                 $('#kualan-' + _maxmiles).addClass("hide").removeClass("kualan-left-start");
@@ -775,7 +782,7 @@
                     $('#kualan-' + _maxmiles).css("left", (40 - a[_maxmiles] * 3.5) + "%");
                     leftKualanAni(_maxmiles);
 
-                }, 500 - 100 * speed);
+                }, 800 - 100 * speed);
             }
         }
         function rightKualanAni(_maxmiles) {
@@ -784,7 +791,8 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
-                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    // maxmiles = maxmiles + parseInt(parseFloat(1000 / (1000 - 100 * speed)) * 10);
+                    mdelay = true;
 
                 }
                 $('#kualan-' + _maxmiles).addClass("hide").removeClass("kualan-right-start");
@@ -798,7 +806,7 @@
                     $('#kualan-' + _maxmiles).css("top", (40 + a[_maxmiles] * 0.5) + "%");
                     rightKualanAni(_maxmiles);
 
-                }, 500 - 100 * speed);
+                }, 800 - 100 * speed);
             }
         }
         function kualan(_maxmiles, lor) {
@@ -858,7 +866,8 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
-                    maxmiles = maxmiles + parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    //maxmiles = maxmiles + parseInt(parseFloat(1000 / (1000 - 100 * speed)) * 10);
+                    mdelay = true;
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-left-start");
                 return false;
@@ -872,7 +881,7 @@
                     $('#banana-' + _maxmiles).css("left", (35 - a[_maxmiles] * 2.5) + "%");
                     leftBananaAni(_maxmiles);
 
-                }, 500 - 100 * speed);
+                }, 800 - 100 * speed);
             }
         }
         function rightBananaAni(_maxmiles) {
@@ -881,7 +890,8 @@
                     $('.page-index').append("<div id='timeplus" + _maxmiles + "' class='timeplus'> +1 S</div>");
                     $j('#timeplus' + _maxmiles).animate({ opacity: 0, top: '13%' }, 500)
                     mtime += 1000;
-                    maxmiles = maxmiles +parseInt(parseFloat(1000 / (500 - 100 * speed)) * 10);
+                    // maxmiles = maxmiles +parseInt(parseFloat(1000 / (1000 - 100 * speed)) * 10);
+                    mdelay = true;
                 }
                 $('#banana-' + _maxmiles).addClass("hide").removeClass("banana-right-start");
                 return false;
@@ -894,7 +904,7 @@
                     $('#banana-' + _maxmiles).css("left", (55 + a[_maxmiles] * 1) + "%");
                     rightBananaAni(_maxmiles);
 
-                }, 500 - 100 * speed);
+                }, 800 - 100 * speed);
             }
         }
         function banana(_maxmiles, lor) {
@@ -942,23 +952,65 @@
                     $('#final-' + _maxmiles).css("left", (47 - a[_maxmiles] * 3.5) + "%");
                     finalGo(_maxmiles);
 
-                }, 500 - 100 * speed);
+                }, 800 - 100 * speed);
             }
         }
 
 
+        
+
+        //setInterval(function () {
+        //    ii++;
+        //    if (ii % 2 == 0) {
+        //        $('.roadline').css("top", "45%");
+        //    }
+        //    else {
+        //        $('.roadline').css("top", "35%");
+        //    }
+
+        //}, 500-10*speed);
+        // GameTimerStart();
+        $('.jiasu').on('touchstart pointerdown', function () {
+            if (gameStart == false) {
+                gameStart = true;
+
+                InitMap();
+                GetFirst();
+                
+            }
+            else{
+                speed++;
+                if (speed == 4) {
+                    $(this).unbind();
+                }
+            }
+        })
+
+
         function GameTimerGo() {
-            go(500);
+            go(800);
             gametimer = setInterval(function () {
                 mtime += 10;
                 $('.using-time-span').text((mtime / 1000).toFixed(2) + "S");
+                if (mdelay == true) {
+                    mdelay = false;
+                    currentRoadVideo += ((maxmiles) + "" + ",");
+                }
+                if (mminus == true) {
+                    mminus = false;
+                    try{
+                        currentRoadVideo=(currentRoadVideo.substring(0, currentRoadVideo.length - 1)).substring(0, (currentRoadVideo.substring(0, currentRoadVideo.length - 1)).lastIndexOf(",") + 1)
+                    }
+                    catch (err) {
+
+                    }
+                }
                 if (mtime % 1000 == 0) {
                     currentRoadVideo += ((maxmiles) + "" + ",");
                 }
             }, 10);
         }
         function go(_speed) {
-
             setTimeout(function () {
                 miles++;
                 $('.miles').text(maxmiles + "米");
@@ -1010,158 +1062,170 @@
                     $('.roadline').addClass("hide");
                     $('.roadline-long').removeClass("hide");
                 }
-                if (speed == 5) {
-                    speed = 4;
+                if (maxmiles<110&& maxmiles>100) {
+                    maxmiles = 110;
+                }
+                if (maxmiles < 10 && maxmiles > 0) {
+                    maxmiles = 10;
                 }
                 maxmiles -= 10;
-                go(500 - 100 * speed);
+
+                go(800 - 100 * speed);
             }, _speed);
         }
+        function GameEnd() {
+            speed = 1;
+            gameStart = false;
+            currentRoadVideo = "";
+            firstRoadVideo = "";
+            map = {};
+            maxmiles = 1000;
+            ii = 0;
+            mtime = 0;
+            clearInterval(videoTimer);
+            $('.using-time-span').text((mtime / 1000).toFixed(2) + "S");
+            $('.miles').text(maxmiles + "米");
+            $('.final-start').remove();
+            $('.banana-left-start').remove();
+            $('.tea-left-start').remove();
+            $('.kualan-left-start').remove();
+            $('.banana-right-start').remove();
+            $('.tea-right-start').remove();
+            $('.kualan-right-start').remove();
+            $('.video-point-now').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
+            $('.video-point-first').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
+            $('.timeplus').remove();
+            $('.timeminus').remove();
+            a = {};
 
-        //setInterval(function () {
-        //    ii++;
-        //    if (ii % 2 == 0) {
-        //        $('.roadline').css("top", "45%");
-        //    }
-        //    else {
-        //        $('.roadline').css("top", "35%");
-        //    }
+            $('.jiasu').on('touchstart pointerdown', function () {
+                if (gameStart == false) {
+                    gameStart = true;
 
-        //}, 500-10*speed);
-        // GameTimerStart();
-        $('.jiasu').on('singleTap', function () {
-            if (gameStart == false) {
-                gameStart = true;
+                    InitMap();
+                    GetFirst();
 
-                InitMap();
-                GetFirst();
-                
+                }
+                else {
+                    speed++;
+                    if (speed == 4) {
+                        $(this).unbind();
+                    }
+                }
+            })
+        }
+
+        function InitMap() {
+            for (var i = 200; i < 1000; i += 100) {
+                var rand = Math.random();
+                if (rand < 0.2) {
+                    var rand2 = Math.random();
+                    if (rand2 < 0.5) {
+                        map["tea" + i] = {
+                            isLeft: false
+                        }
+                    }
+                    else {
+                        map["tea" + i] = {
+                            isLeft: true
+                        }
+                    }
+
+                }
+                else if (rand < 0.5) {
+                    var rand2 = Math.random();
+                    if (rand2 < 0.5) {
+                        map["banana" + i] = {
+                            isLeft: false
+                        }
+                    }
+                    else {
+                        map["banana" + i] = {
+                            isLeft: true
+                        }
+                    }
+                }
+                else if (rand < 0.8) {
+                    var rand2 = Math.random();
+                    if (rand2 < 0.5) {
+                        map["kualan" + i] = {
+                            isLeft: false
+                        }
+                    }
+                    else {
+                        map["kualan" + i] = {
+                            isLeft: true
+                        }
+                    }
+                }
+                else {
+
+                }
             }
-            else{
-                speed++;
-            }
-        })
+            map["final100"] = {};
+        }
+
+        function GetFirst() {
+            $.post("/index.php?r=game/gettoprecord", {
+                "gameId": gameId,
+            }, function (data, textStatus) {
+                if (data.success = true) {
+                    //获取成功
+                    if (data.data == null) {
+                        firstRoadVideo = "";
+                    }
+                    else {
+                        firstRoadVideo = data.data.content;
+                    }
+                    var j = 0;
+                    var x1 = firstRoadVideo.split(",");
+                    videoTimer= setInterval(function () {
+                        $('.video-point-now').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
+                        if (j < x1.length) {
+                            $('.video-point-first').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
+                        }
+                        else {
+                            $('.video-point-first').css("top", 0 + "%");
+                        }
+                        j++;
+
+                    }, 1000);
+                    GameTimerGo();
+                }
+                else {
+                    alert("访问后台失败！");
+                    firstRoadVideo = "";
+                    //GameReset();
+
+                }
+            })
+        }
+        function SubmitScore() {
+            $.post("/index.php?r=game/play", {
+                "userId": nowUserId,
+                "gameId": gameId,
+                "timeUsed": mtime,
+                "record": currentRoadVideo.substring(0, currentRoadVideo.length - 1)
+            }, function (data, textStatus) {
+                if (data.success = true) {
+                    //更新成功
+                    alert("恭喜完成疯狂急速骑行，快快邀请好友一起挑战吧！");
+                    GameEnd();
+                   // PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
+                    window.location.href = "index.html";
+                    //GameReset();
+                }
+                else {
+                    alert("上传成绩失败！");
+                    //GameReset();
+
+                }
+            })
+        }
 
     })
 
-    function GameEnd() {
-        speed = 1;
-        gameStart = false;
-        currentRoadVideo = "";
-        firstRoadVideo = "";
-        map = {};
-        maxmiles = 1000;
-        ii = 0;
-        mtime = 0;
-    }
 
-    function InitMap() {
-        for (var i = 200; i < 1000; i += 100) {
-            var rand = Math.random();
-            if (rand < 0.2) {
-                var rand2 = Math.random();
-                if (rand2 < 0.5) {
-                    map["tea" + i] = {
-                        isLeft:false
-                    }
-                }
-                else {
-                    map["tea" + i] = {
-                        isLeft: true
-                    }
-                }
-
-            }
-            else if(rand<0.5) {
-                var rand2 = Math.random();
-                if (rand2 < 0.5) {
-                    map["banana" + i] = {
-                        isLeft: false
-                    }
-                }
-                else {
-                    map["banana" + i] = {
-                        isLeft: true
-                    }
-                }
-            }
-            else if (rand < 0.8) {
-                var rand2 = Math.random();
-                if (rand2 < 0.5) {
-                    map["kualan" + i] = {
-                        isLeft: false
-                    }
-                }
-                else {
-                    map["kualan" + i] = {
-                        isLeft: true
-                    }
-                }
-            }
-            else {
-
-            }
-        }
-        map["final100"] = {};
-    }
-
-    function GetFirst() {
-        $.post("/index.php?r=game/gettoprecord", {
-            "gameId": gameId,
-        }, function (data, textStatus) {
-            if (data.success = true) {
-                //获取成功
-                if (data.data == null) {
-                    firstRoadVideo = "";
-                }
-                else {
-                    firstRoadVideo = data.data.content;
-                }
-                var j = 0;
-                var x1 = firstRoadVideo.split(",");
-                setInterval(function () {
-                    $('.video-point-now').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
-                    if (j < x1.length) {
-                        $('.video-point-first').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
-                    }
-                    else {
-                        $('.video-point-first').css("top", 0 + "%");
-                    }
-                    j++;
-
-                }, 1000);
-
-                GameTimerGo();
-            }
-            else {
-                alert("访问后台失败！");
-                firstRoadVideo = "";
-                //GameReset();
-
-            }
-        })
-    }
-    function SubmitScore() {
-        $.post("/index.php?r=game/play", {
-            "userId": nowUserId,
-            "gameId": gameId,
-            "timeUsed": mtime,
-            "record": currentRoadVideo.substring(0, currentRoadVideo.length - 1)
-        }, function (data, textStatus) {
-            if (data.success = true) {
-                //更新成功
-                alert("恭喜完成疯狂急速骑行，快快邀请好友一起挑战吧！");
-                GameEnd();
-                PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
-                //GameReset();
-            }
-            else {
-                alert("上传成绩失败！");
-                //GameReset();
-
-            }
-        })
-    }
     function formatPalyerName(strName) {
         var lengthx2 = 4;
         var j = 0;
