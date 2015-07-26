@@ -153,10 +153,10 @@
 
         .page-rank .rank-opacity-div {
             position: absolute;
-            top: 18%;
+            top: 28%;
             left: 5%;
             width: 90%;
-            height: 65%;
+            height: 50%;
             background-color: white;
             opacity: 0.7;
             border-radius: 20px;
@@ -164,7 +164,7 @@
 
         .page-rank .rank-table-div {
             position: absolute;
-            top: 20%;
+            top: 28%;
             left: 5%;
             width: 90%;
             min-height: 50%;
@@ -443,6 +443,13 @@
             width: 28%;
             top: 3%;
         }
+        th {
+            background-color: white;
+        }
+
+        td {
+            background-color: white;
+        }
     </style>
 
 </head>
@@ -594,7 +601,7 @@
         $('.gaozhi-rank-btn').on('singleTap', function () {
             $('.rank-table').html("");
             var rankstr = "<tr><th class='th-xuhao'>序号</th><th class='th-normal'>昵称</th><th class='th-normal'>骑行时间</th><th class='th-normal'>挑战次数</th><tr>";
-                    for (var i = 0; i < 9; i++) {
+                    for (var i = 0; i < 10; i++) {
                         rankstr += "<tr>" +
                             "<td class='th-align-center'>" + parseInt(i + 1) +
                             "</td><td class='th-align-center'>" + "哈"+
@@ -625,6 +632,9 @@
             //        alert("数据获取失败！");
             //    }
             //})
+        })
+        $('.rank-return-btn').on('singleTap', function () {
+            PageCtl.pageMove(PageCtl.effects.fade, "gaozhi");
         })
         $('.rule-btn').on('singleTap', function () {
             if ($('.rule-div').hasClass("hide")) {
