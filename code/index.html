@@ -1032,23 +1032,10 @@
         $('.jiasu').on('singleTap', function () {
             if (gameStart == false) {
                 gameStart = true;
-                var j = 0;
+
                 InitMap();
                 GetFirst();
-                var x1 = firstRoadVideo.split(",");
-                setInterval(function () {
-                    $('.video-point-now').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
-                    if (j < x1.length) {
-                        $('.video-point-first').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
-                    }
-                    else {
-                        $('.video-point-first').css("top", 0 + "%");
-                    }
-                    j++;
-
-                }, 1000);
-
-                GameTimerGo();
+                
             }
             else{
                 speed++;
@@ -1129,6 +1116,21 @@
                 else {
                     firstRoadVideo = data.data.content;
                 }
+                var j = 0;
+                var x1 = firstRoadVideo.split(",");
+                setInterval(function () {
+                    $('.video-point-now').css("top", parseFloat(maxmiles / 1100).toFixed(2) * 100 + "%");
+                    if (j < x1.length) {
+                        $('.video-point-first').css("top", parseFloat(x1[j] / 1100).toFixed(2) * 100 + "%");
+                    }
+                    else {
+                        $('.video-point-first').css("top", 0 + "%");
+                    }
+                    j++;
+
+                }, 1000);
+
+                GameTimerGo();
             }
             else {
                 alert("访问后台失败！");
